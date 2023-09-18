@@ -9,4 +9,9 @@ def transcribe():
     model = load_model("large-v2", device, compute_type = compute_type)
     audio = load_audio(r"/content/converted.mp3")
     transcript = model.transcribe(audio, batch_size= batch_size)
-    return transcript
+    model_a, metadata = load_align_model(language_code=transcript["language"], device=device)
+    result = align(transcript["segments"], model_a, metadata, audio, device, return_char_alignments=False)
+    return result
+
+if __name__ == "__main__":
+    print(transcribe)
